@@ -6,11 +6,22 @@
 //  Copyright (c) 2014 Sam Green. All rights reserved.
 //
 
+#ifndef __CG_VECTOR_ADDTIONS_H
+#define __CG_VECTOR_ADDTIONS_H
+
 @import CoreGraphics;
 @import Foundation;
 
-CG_EXTERN const CGVector CGVectorZero;
-CG_EXTERN const CGVector CGVectorUnit;
+#include <math.h>
+
+#if defined(__ARM_NEON__)
+#include <arm_neon.h>
+#endif
+
+
+#pragma mark -
+#pragma mark Prototypes
+#pragma mark -
 
 /* Add two vectors */
 CG_INLINE CGVector CGVectorSum(CGVector vector1, CGVector vector2);
@@ -40,7 +51,10 @@ CG_INLINE CGFloat CGVectorAngle(CGVector vector);
 CG_INLINE CGFloat CGVectorDotProduct(CGVector vector1, CGVector vector2);
 
 /* Calculate the magnitude (length) of a vector */
-CG_INLINE CGFloat CGVectorMagnitude(CGVector vector);
+CG_INLINE CGFloat CGVectorLength(CGVector vector);
+
+/* Calculate the distance between two vectors */
+CG_INLINE CGFloat CGVectorDistance(CGVector vectorStart, CGVector vectorEnd);
 
 /* Create an NSString describing this vector */
 CG_INLINE NSString* NSStringFromCGVector(CGVector vector);
@@ -52,22 +66,44 @@ CG_INLINE bool __CGVectorEqualToVector(CGVector vector1, CGVector vector2);
 CG_INLINE bool __CGVectorPerpendicularToVector(CGVector vector1, CGVector vector2);
 
 
+#pragma mark -
+#pragma mark Implementations
+#pragma mark -
+
 CG_INLINE CGVector
 CGVectorSum(CGVector vector1, CGVector vector2)
 {
+#if defined(__ARM_NEON__)
+    float32x2_t v = vadd_f32(*(float32x2_t *)&vector1,
+                             *(float32x2_t *)&vector2);
+    return *(CGVector *)&v;
+#else
     return CGVectorMake(vector1.dx + vector2.dx, vector1.dy + vector2.dy);
+#endif
 }
 
 CG_INLINE CGVector
 CGVectorDifference(CGVector vector1, CGVector vector2)
 {
+#if defined(__ARM_NEON__)
+    float32x2_t v = vsub_f32(*(float32x2_t *)&vector1,
+                             *(float32x2_t *)&vector2);
+    return *(CGVector *)&v;
+#else
     return CGVectorMake(vector1.dx - vector2.dx, vector1.dy - vector2.dy);
+#endif
 }
 
 CG_INLINE CGVector
 CGVectorMultiply(CGVector vector1, CGVector vector2)
 {
+#if defined(__ARM_NEON__)
+    float32x2_t v = vmul_f32(*(float32x2_t *)&vector1,
+                             *(float32x2_t *)&vector2);
+    return *(CGVector *)&v;
+#else
     return CGVectorMake(vector1.dx * vector2.dx, vector1.dy * vector2.dy);
+#endif
 }
 
 CG_INLINE CGVector
@@ -79,7 +115,7 @@ CGVectorMultiplyByScalar(CGVector vector, CGFloat scalar)
 CG_INLINE CGVector
 CGVectorNormalize(CGVector vector)
 {
-    const CGFloat kMagnitude = CGVectorMagnitude(vector);
+    const CGFloat kMagnitude = CGVectorLength(vector);
     return CGVectorMake(vector.dx / kMagnitude, vector.dy / kMagnitude);
 }
 
@@ -93,7 +129,7 @@ CG_INLINE CGFloat
 CGVectorAngleBetween(CGVector vector1, CGVector vector2)
 {
     CGFloat dot = CGVectorDotProduct(vector1, vector2);
-    CGFloat magnitude = CGVectorMagnitude(vector1) * CGVectorMagnitude(vector2);
+    CGFloat magnitude = CGVectorLength(vector1) * CGVectorLength(vector2);
     return cos(dot / magnitude);
 }
 
@@ -110,9 +146,15 @@ CGVectorDotProduct(CGVector vector1, CGVector vector2)
 }
 
 CG_INLINE CGFloat
-CGVectorMagnitude(CGVector vector)
+CGVectorLength(CGVector vector)
 {
     return hypotf(vector.dx, vector.dy);
+}
+
+CG_INLINE CGFloat
+CGVectorDistance(CGVector vectorStart, CGVector vectorEnd)
+{
+    return -1;
 }
 
 CG_INLINE NSString*
@@ -135,3 +177,5 @@ __CGVectorPerpendicularToVector(CGVector vector1, CGVector vector2)
 }
 #define CGVectorPerpendicularToVector __CGVectorPerpendicularToVector
 #define CGVectorOrthogonalToVector __CGVectorPerpendicularToVector
+    
+#endif /* __CG_VECTOR_ADDTIONS_H */
