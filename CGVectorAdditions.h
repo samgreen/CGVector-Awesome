@@ -142,7 +142,7 @@ CGVectorAngleBetween(CGVector vector1, CGVector vector2)
 CG_INLINE CGFloat
 CGVectorAngle(CGVector vector)
 {
-    return atan(vector.dy / vector.dx);
+    return atan2(vector.dy, vector.dx);
 }
 
 CG_INLINE CGFloat
