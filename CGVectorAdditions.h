@@ -107,16 +107,22 @@ CGVectorMultiply(CGVector vector1, CGVector vector2)
 }
 
 CG_INLINE CGVector
-CGVectorMultiplyByScalar(CGVector vector, CGFloat scalar)
+CGVectorMultiplyByScalar(CGVector vector, CGFloat value)
 {
-    return CGVectorMake(vector.dx * scalar, vector.dy * scalar);
+#if defined(__ARM_NEON__)
+    float32x2_t v = vmul_f32(*(float32x2_t *)&vector,
+                             vdup_n_f32((float32_t)value));
+    return *(CGVector *)&v;
+#else
+    return CGVectorMake(vector.dx * value, vector.dy * value);
+#endif
 }
 
 CG_INLINE CGVector
 CGVectorNormalize(CGVector vector)
 {
-    const CGFloat kMagnitude = CGVectorLength(vector);
-    return CGVectorMake(vector.dx / kMagnitude, vector.dy / kMagnitude);
+    CGFloat scale = 1.0f / CGVectorLength(vector);
+    return CGVectorMultiplyByScalar(vector, scale);
 }
 
 CG_INLINE CGVector
@@ -142,19 +148,33 @@ CGVectorAngle(CGVector vector)
 CG_INLINE CGFloat
 CGVectorDotProduct(CGVector vector1, CGVector vector2)
 {
-    return (vector1.dx * vector2.dx) + (vector1.dy * vector2.dy);
+#if defined(__ARM_NEON__)
+    float32x2_t v = vmul_f32(*(float32x2_t *)&vectorLeft,
+                             *(float32x2_t *)&vectorRight);
+    v = vpadd_f32(v, v);
+    return vget_lane_f32(v, 0);
+#else
+    return vector1.dx * vector2.dx + vector1.dy * vector2.dy;
+#endif
 }
 
 CG_INLINE CGFloat
 CGVectorLength(CGVector vector)
 {
+#if defined(__ARM_NEON__)
+    float32x2_t v = vmul_f32(*(float32x2_t *)&vector,
+                             *(float32x2_t *)&vector);
+    v = vpadd_f32(v, v);
+    return sqrt(vget_lane_f32(v, 0));
+#else
     return hypotf(vector.dx, vector.dy);
+#endif
 }
 
 CG_INLINE CGFloat
 CGVectorDistance(CGVector vectorStart, CGVector vectorEnd)
 {
-    return -1;
+    return CGVectorLength(CGVectorDifference(vectorEnd, vectorStart));
 }
 
 CG_INLINE NSString*
