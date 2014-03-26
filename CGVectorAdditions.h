@@ -149,8 +149,8 @@ CG_INLINE CGFloat
 CGVectorDotProduct(CGVector vector1, CGVector vector2)
 {
 #if defined(__ARM_NEON__)
-    float32x2_t v = vmul_f32(*(float32x2_t *)&vectorLeft,
-                             *(float32x2_t *)&vectorRight);
+    float32x2_t v = vmul_f32(*(float32x2_t *)&vector1,
+                             *(float32x2_t *)&vector2);
     v = vpadd_f32(v, v);
     return vget_lane_f32(v, 0);
 #else
