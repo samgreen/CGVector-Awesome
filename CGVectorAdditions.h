@@ -137,6 +137,10 @@ CGVectorAngleBetween(CGVector vector1, CGVector vector2)
     CGFloat dot = CGVectorDotProduct(vector1, vector2);
     CGFloat magnitude = CGVectorLength(vector1) * CGVectorLength(vector2);
 
+	if (magnitude == 0) {
+		return 0;
+	}
+	
 	CGFloat tmp = dot / magnitude;
 	
 	if (tmp > 1.0f) {
@@ -145,7 +149,7 @@ CGVectorAngleBetween(CGVector vector1, CGVector vector2)
 		tmp = -1.0f;
 	}
 	
-    return acos( tmp );
+    return acosf( tmp );
 }
 
 CG_INLINE CGFloat
