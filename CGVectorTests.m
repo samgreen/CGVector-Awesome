@@ -57,7 +57,7 @@
     
     CGVector result = CGVectorMakePerpendicular(v1);
     
-    XCTAssertEqualWithAccuracy(result.dx, 1, FLT_EPSILON);
+    XCTAssertEqualWithAccuracy(result.dx, -1, FLT_EPSILON);
     XCTAssertEqualWithAccuracy(result.dy, 0, FLT_EPSILON);
 }
 
