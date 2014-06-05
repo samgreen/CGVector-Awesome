@@ -62,12 +62,32 @@
 }
 
 - (void)testAngleBetween {
-    CGVector v1 = CGVectorMake(1, 0);
-    CGVector v2 = CGVectorMake(0, 1);
-    
-    CGFloat result = CGVectorAngleBetween(v1, v2);
-    
-    XCTAssertEqualWithAccuracy(result, M_PI_2, FLT_EPSILON);
+	{
+		CGVector v1 = CGVectorMake(1, 0);
+		CGVector v2 = CGVectorMake(0, 1);
+		
+		CGFloat result = CGVectorAngleBetween(v1, v2);
+		
+		XCTAssertEqualWithAccuracy(result, M_PI_2, FLT_EPSILON);
+	}
+
+	{
+		CGVector v1 = CGVectorMake(1, 1);
+		CGVector v2 = CGVectorMake(1, 1);
+		
+		CGFloat result = CGVectorAngleBetween(v1, v2);
+		
+		XCTAssertEqualWithAccuracy(result, 0, FLT_EPSILON);
+	}
+	
+	{
+		CGVector v1 = CGVectorMake(1, 1);
+		CGVector v2 = CGVectorMake(1, 0);
+		
+		CGFloat result = CGVectorAngleBetween(v1, v2);
+		
+		XCTAssertEqualWithAccuracy(result, M_PI_4, FLT_EPSILON);
+	}
 }
 
 - (void)testAngle {
