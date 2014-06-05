@@ -121,7 +121,13 @@ CGVectorMultiplyByScalar(CGVector vector, CGFloat value)
 CG_INLINE CGVector
 CGVectorNormalize(CGVector vector)
 {
-    CGFloat scale = 1.0f / CGVectorLength(vector);
+	CGFloat length = CGVectorLength(vector);
+	
+	if (length == 0) {
+		return CGVectorMake(0, 0);
+	}
+
+    CGFloat scale = 1.0f / length;
     return CGVectorMultiplyByScalar(vector, scale);
 }
 
