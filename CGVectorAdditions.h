@@ -121,7 +121,13 @@ CGVectorMultiplyByScalar(CGVector vector, CGFloat value)
 CG_INLINE CGVector
 CGVectorNormalize(CGVector vector)
 {
-    CGFloat scale = 1.0f / CGVectorLength(vector);
+	CGFloat length = CGVectorLength(vector);
+	
+	if (length == 0) {
+		return CGVectorMake(0, 0);
+	}
+
+    CGFloat scale = 1.0f / length;
     return CGVectorMultiplyByScalar(vector, scale);
 }
 
@@ -136,7 +142,20 @@ CGVectorAngleBetween(CGVector vector1, CGVector vector2)
 {
     CGFloat dot = CGVectorDotProduct(vector1, vector2);
     CGFloat magnitude = CGVectorLength(vector1) * CGVectorLength(vector2);
-    return cos(dot / magnitude);
+
+	if (magnitude == 0) {
+		return 0;
+	}
+	
+	CGFloat tmp = dot / magnitude;
+	
+	if (tmp > 1.0f) {
+		tmp = 1.0f;
+	} else if (tmp < -1.0f) {
+		tmp = -1.0f;
+	}
+	
+    return acosf( tmp );
 }
 
 CG_INLINE CGFloat
