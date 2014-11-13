@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Sam Green. All rights reserved.
 //
 
-#ifndef __CG_VECTOR_ADDTIONS_H
-#define __CG_VECTOR_ADDTIONS_H
+#ifndef __CG_VECTOR_ADDITIONS_H
+#define __CG_VECTOR_ADDITIONS_H
 
 @import CoreGraphics;
 @import Foundation;
@@ -217,4 +217,4 @@ __CGVectorPerpendicularToVector(CGVector vector1, CGVector vector2)
 #define CGVectorPerpendicularToVector __CGVectorPerpendicularToVector
 #define CGVectorOrthogonalToVector __CGVectorPerpendicularToVector
     
-#endif /* __CG_VECTOR_ADDTIONS_H */
+#endif /* __CG_VECTOR_ADDITIONS_H */
