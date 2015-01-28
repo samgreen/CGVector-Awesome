@@ -38,9 +38,6 @@ CG_INLINE CGFloat CGVectorLength(CGVector vector);
 /* Calculate the distance between two vectors */
 CG_INLINE CGFloat CGVectorDistance(CGVector vectorStart, CGVector vectorEnd);
 
-/* Create an NSString describing this vector */
-CG_INLINE NSString* NSStringFromCGVector(CGVector vector);
-
 /* Determine if two vectors are equal */
 CG_INLINE bool __CGVectorEqualToVector(CGVector vector1, CGVector vector2);
 
