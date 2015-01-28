@@ -9,12 +9,14 @@
 #ifndef __CG_VECTOR_ADDITIONS_H
 #define __CG_VECTOR_ADDITIONS_H
 
-@import CoreGraphics;
-@import Foundation;
+//@import CoreGraphics;
+//@import Foundation;
+#import <CoreGraphics/CoreGraphics.h>
+#import <Foundation/Foundation.h>
 
 #include <math.h>
 
-#if defined(__ARM_NEON__)
+#if defined(__ARM_NEON__) && !CGFLOAT_IS_DOUBLE
 #include <arm_neon.h>
 #endif
 
@@ -56,9 +58,6 @@ CG_INLINE CGFloat CGVectorLength(CGVector vector);
 /* Calculate the distance between two vectors */
 CG_INLINE CGFloat CGVectorDistance(CGVector vectorStart, CGVector vectorEnd);
 
-/* Create an NSString describing this vector */
-CG_INLINE NSString* NSStringFromCGVector(CGVector vector);
-
 /* Determine if two vectors are equal */
 CG_INLINE bool __CGVectorEqualToVector(CGVector vector1, CGVector vector2);
 
@@ -73,7 +72,7 @@ CG_INLINE bool __CGVectorPerpendicularToVector(CGVector vector1, CGVector vector
 CG_INLINE CGVector
 CGVectorSum(CGVector vector1, CGVector vector2)
 {
-#if defined(__ARM_NEON__)
+#if defined(__ARM_NEON__) && !CGFLOAT_IS_DOUBLE
     float32x2_t v = vadd_f32(*(float32x2_t *)&vector1,
                              *(float32x2_t *)&vector2);
     return *(CGVector *)&v;
@@ -85,7 +84,7 @@ CGVectorSum(CGVector vector1, CGVector vector2)
 CG_INLINE CGVector
 CGVectorDifference(CGVector vector1, CGVector vector2)
 {
-#if defined(__ARM_NEON__)
+#if defined(__ARM_NEON__) && !CGFLOAT_IS_DOUBLE
     float32x2_t v = vsub_f32(*(float32x2_t *)&vector1,
                              *(float32x2_t *)&vector2);
     return *(CGVector *)&v;
@@ -97,7 +96,7 @@ CGVectorDifference(CGVector vector1, CGVector vector2)
 CG_INLINE CGVector
 CGVectorMultiply(CGVector vector1, CGVector vector2)
 {
-#if defined(__ARM_NEON__)
+#if defined(__ARM_NEON__) && !CGFLOAT_IS_DOUBLE
     float32x2_t v = vmul_f32(*(float32x2_t *)&vector1,
                              *(float32x2_t *)&vector2);
     return *(CGVector *)&v;
@@ -109,7 +108,7 @@ CGVectorMultiply(CGVector vector1, CGVector vector2)
 CG_INLINE CGVector
 CGVectorMultiplyByScalar(CGVector vector, CGFloat value)
 {
-#if defined(__ARM_NEON__)
+#if defined(__ARM_NEON__) && !CGFLOAT_IS_DOUBLE
     float32x2_t v = vmul_f32(*(float32x2_t *)&vector,
                              vdup_n_f32((float32_t)value));
     return *(CGVector *)&v;
@@ -167,7 +166,7 @@ CGVectorAngle(CGVector vector)
 CG_INLINE CGFloat
 CGVectorDotProduct(CGVector vector1, CGVector vector2)
 {
-#if defined(__ARM_NEON__)
+#if defined(__ARM_NEON__) && !CGFLOAT_IS_DOUBLE
     float32x2_t v = vmul_f32(*(float32x2_t *)&vector1,
                              *(float32x2_t *)&vector2);
     v = vpadd_f32(v, v);
@@ -180,7 +179,7 @@ CGVectorDotProduct(CGVector vector1, CGVector vector2)
 CG_INLINE CGFloat
 CGVectorLength(CGVector vector)
 {
-#if defined(__ARM_NEON__)
+#if defined(__ARM_NEON__) && !CGFLOAT_IS_DOUBLE
     float32x2_t v = vmul_f32(*(float32x2_t *)&vector,
                              *(float32x2_t *)&vector);
     v = vpadd_f32(v, v);
@@ -194,12 +193,6 @@ CG_INLINE CGFloat
 CGVectorDistance(CGVector vectorStart, CGVector vectorEnd)
 {
     return CGVectorLength(CGVectorDifference(vectorEnd, vectorStart));
-}
-
-CG_INLINE NSString*
-NSStringFromCGVector(CGVector vector)
-{
-    return [NSString stringWithFormat:@"{%f, %f}", vector.dx, vector.dy];
 }
 
 CG_INLINE bool
