@@ -25,6 +25,9 @@
 #pragma mark Prototypes
 #pragma mark -
 
+/* Create a vector from the given point */
+CG_INLINE CGVector CGVectorFromPoint(CGPoint pt);
+
 /* Add two vectors */
 CG_INLINE CGVector CGVectorSum(CGVector vector1, CGVector vector2);
 
@@ -68,6 +71,12 @@ CG_INLINE bool __CGVectorPerpendicularToVector(CGVector vector1, CGVector vector
 #pragma mark -
 #pragma mark Implementations
 #pragma mark -
+
+CG_INLINE CGVector
+CGVectorFromPoint(CGPoint pt)
+{
+    return CGVectorMake(pt.x, pt.y);
+}
 
 CG_INLINE CGVector
 CGVectorSum(CGVector vector1, CGVector vector2)
