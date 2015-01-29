@@ -5,6 +5,9 @@ Additions to CoreGraphics CGVector, most useful with Apple's SpriteKit
 
 Methods
 ```
+/* Create a vector from the given point */
+CG_INLINE CGVector CGVectorFromPoint(CGPoint pt);
+
 /* Add two vectors */
 CG_INLINE CGVector CGVectorSum(CGVector vector1, CGVector vector2);
 
