@@ -32,6 +32,9 @@ CG_INLINE CGFloat CGVectorAngleBetween(CGVector vector1, CGVector vector2);
 /* Calculate the angle of `vector` */
 CG_INLINE CGFloat CGVectorAngle(CGVector vector);
 
+/* Calculate the angle of `vector` for use with a SpriteKit zRotation property */
+CG_INLINE CGFloat CGVectorAngleSK(CGVector vector);
+
 /* Calculate the dot product of two vectors */
 CG_INLINE CGFloat CGVectorDotProduct(CGVector vector1, CGVector vector2);
 
