@@ -169,7 +169,7 @@ CGVectorAngle(CGVector vector)
 CG_INLINE CGFloat
 CGVectorAngleSK(CGVector vector)
 {
-    return fmod(M_PI * 2.0 - atan2(vector.dy, vector.dx) + M_PI_2, M_PI * 2.0);
+    return fmod(M_2_PI - atan2(vector.dy, vector.dx) + M_PI_2, M_PI * 2.0);
 }
 
 CG_INLINE CGFloat
