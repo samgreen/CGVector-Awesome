@@ -1,6 +1,8 @@
 CGVector-Awesome
 ================
 
+This library has been ported to [Swift](https://github.com/samgreen/CGVector-Awesome-Swift)
+
 Additions to CoreGraphics CGVector, most useful with Apple's SpriteKit
 
 Methods
